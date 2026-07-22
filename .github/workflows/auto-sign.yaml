@@ -1,0 +1,34 @@
+name: Auto Sign
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: latest
+      - name: Install dependencies
+        run: uv sync
+      - name: Run main.py
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          PUSH_SERVICES: ${{ vars.PUSH_SERVICES }}
+          SC3_SENDKEY: ${{ secrets.SC3_SENDKEY }}
+          SC3_UID: ${{ secrets.SC3_UID }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          USE_PROXY: ${{ vars.USE_PROXY }}
+          EXIT_WHEN_FAIL: ${{ vars.EXIT_WHEN_FAIL }}
+          HIDE_SIGN_DETAILS: ${{ vars.HIDE_SIGN_DETAILS }}
+          LOG_LEVEL: ${{ vars.LOG_LEVEL }}
+          NO_PUSH: ${{ vars.NO_PUSH }}
+        run: uv run python src/main.py

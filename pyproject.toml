@@ -1,0 +1,9 @@
+[project]
+name = "skyland-as"
+version = "0.4.0"
+requires-python = ">=3.12"
+dependencies = [
+    "cryptography>=49.0.0",
+    "requests>=2.34.2",
+    "rich>=15.0.0",
+]
